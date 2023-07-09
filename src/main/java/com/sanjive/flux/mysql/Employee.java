@@ -1,6 +1,7 @@
 package com.sanjive.flux.mysql;
 
 import java.io.Serializable;
+import java.util.Random;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value="EMPLOYEE")
+@Table(name="employee")
 public class Employee implements Serializable {
 	/**
 	 * 
@@ -21,22 +22,26 @@ public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(value="ID")
+	@Column(value="id")
 	private int id;
 	
-	@Column(value="NAME")
+	@Column(value="name")
 	private String name;
 	
-	@Column(value="LOCATION")
+	@Column(value="location")
 	private String location;
 	
-	@Column(value="PHONENUMBER")
+	@Column(value="phonenumber")
 	private String phonenumber;
 	
-	@Column(value="DESIGNATION")
+	@Column(value="designation")
 	private String designation;
 	
 	public Employee(String name, String phonenumber, String location, String designation){
+//		Random rand = new Random();
+//
+//		int random = rand.nextInt(1000);
+//		this.id=random;
 		this.designation=designation;
 		this.name=name;
 		this.location=location;
