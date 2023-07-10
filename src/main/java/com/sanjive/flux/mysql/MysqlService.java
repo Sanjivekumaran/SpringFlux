@@ -1,5 +1,6 @@
 package com.sanjive.flux.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -8,11 +9,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class MysqlService {
 	
+	@Autowired
 	MysqlRepository mysqlRepository;
 	
-	public MysqlService(MysqlRepository mysqlRepository) {
-		this.mysqlRepository=mysqlRepository;
-	}
 	public Flux<Employee> findAll() {
 		// TODO Auto-generated method stub
 		return mysqlRepository.findAll();

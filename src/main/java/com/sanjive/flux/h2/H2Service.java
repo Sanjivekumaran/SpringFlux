@@ -1,21 +1,56 @@
-//package com.sanjive.flux.h2;
-//
-//import java.util.Random;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.stereotype.Service;
-//
-//import io.r2dbc.spi.Connection;
-//import io.r2dbc.spi.ConnectionFactory;
-//import reactor.core.publisher.Flux;
-//import reactor.core.publisher.Mono;
-//
+package com.sanjive.flux.h2;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+@Service
+public class H2Service {
+	
+	@Autowired
+	H2Repository h2Repository;
+	
+		public  Flux<Employee> findAll() {
+		// TODO Auto-generated method stub
+			return h2Repository.findAll();
+	}
+
+	public Mono<Employee> save(Employee employee) {
+		return h2Repository.save(employee);
+	}
+
+	public Mono<String> update(Employee employee) {
+		// TODO Auto-generated method stub
+		return h2Repository.findById(employee.getId()).flatMap(emp -> {
+			if (emp != null) {
+				emp.setLocation(employee.getLocation());
+				emp.setDesignation(employee.getDesignation());
+				emp.setName(employee.getName());
+				emp.setPhonenumber(employee.getPhonenumber());
+				h2Repository.save(emp).subscribe();
+				return Mono.just("Saved Successfully");
+			}
+			return Mono.just("No employee exist");
+		});
+	}
+
+	public Mono<String> delete(int id) {
+		// TODO Auto-generated method stub
+		return h2Repository.findById(id).flatMap(emp -> {
+			if (emp != null) {
+				h2Repository.deleteById(id).subscribe();
+				return Mono.just("Deleted Successfully");
+			}
+			return Mono.just("No employee exist");
+		});
+
+	}
+}
+
+
 //@Service
 //public class H2Service {
-//
-////	@Autowired
-////	H2Repository h2Repository;
 //
 //	@Qualifier(value = "h2ConnectionFactory")
 //	@Autowired
@@ -79,41 +114,6 @@
 //		return Mono.from(connection.close()).then(Mono.empty());
 //	}
 //
-////	public Flux<Employee> findAll() {
-////		// TODO Auto-generated method stub
-////		return h2Repository.findAll();
-////
-////	}
-////
-////	public Mono<Employee> save(Employee employee) {
-////		return h2Repository.save(employee);
-////	}
-////
-////	public Mono<String> update(Employee employee) {
-////		// TODO Auto-generated method stub
-////		return h2Repository.findById(employee.getId()).flatMap(emp -> {
-////			if (emp != null) {
-////				emp.setLocation(employee.getLocation());
-////				emp.setDesignation(employee.getDesignation());
-////				emp.setName(employee.getName());
-////				emp.setPhonenumber(employee.getPhonenumber());
-////				h2Repository.save(emp).subscribe();
-////				return Mono.just("Saved Successfully");
-////			}
-////			return Mono.just("No employee exist");
-////		});
-////	}
-////
-////	public Mono<String> delete(int id) {
-////		// TODO Auto-generated method stub
-////		return h2Repository.findById(id).flatMap(emp -> {
-////			if (emp != null) {
-////				h2Repository.deleteById(id).subscribe();
-////				return Mono.just("Deleted Successfully");
-////			}
-////			return Mono.just("No employee exist");
-////		});
-////
-////	}
+//
 //
 //}

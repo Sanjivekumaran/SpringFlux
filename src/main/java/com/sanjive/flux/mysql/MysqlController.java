@@ -20,10 +20,10 @@ public class MysqlController {
 	@Autowired 
 	MysqlService mysqlService;
 	
-//	@GetMapping("/mono")
-//	public Mono<String> getMono() {
-//		return Mono.just("String");
-//	}
+	@GetMapping("/mono")
+	public Mono<Employee> getMono() {
+		return mysqlService.save(new Employee("test", "test", "test",
+				"test"));	}
 
 	@GetMapping("/GetEmployee")
 	public Flux<Employee> getEmployee() {
