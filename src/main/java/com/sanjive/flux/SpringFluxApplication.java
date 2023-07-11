@@ -20,13 +20,13 @@ public class SpringFluxApplication {
 		SpringApplication.run(SpringFluxApplication.class, args);
 	}
 
-//	@Bean
-//	ConnectionFactoryInitializer initializer(@Qualifier("h2ConnectionFactory") ConnectionFactory connectionFactory) {
-//
-//		ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
-//		initializer.setConnectionFactory(connectionFactory);
-//		initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("Schema.sql")));
-//
-//		return initializer;
-//	}
+	@Bean
+	ConnectionFactoryInitializer initializer(@Qualifier("h2ConnectionFactory") ConnectionFactory connectionFactory) {
+
+		ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
+		initializer.setConnectionFactory(connectionFactory);
+		initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("Schema.sql")));
+
+		return initializer;
+	}
 }

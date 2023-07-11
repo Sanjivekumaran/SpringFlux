@@ -18,13 +18,13 @@ import io.r2dbc.spi.ConnectionFactory;
 @EnableR2dbcRepositories( entityOperationsRef = "h2EmployeeEntityTemplate")
 public class H2Config {
 
-	@Value("${spring.r2dbc.mysql.url}")
+	@Value("${spring.r2dbc.h2.url}")
 	String url;
 	
-	@Value("${spring.r2dbc.mysql.username}")
+	@Value("${spring.r2dbc.h2.username}")
 	String username;
 	
-	@Value("${spring.r2dbc.mysql.password}")
+	@Value("${spring.r2dbc.h2.password}")
 	String password;
 	
 	@Bean

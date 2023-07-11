@@ -46,6 +46,11 @@ public class H2Service {
 		});
 
 	}
+
+	public Mono<String> deleteAll() {
+		h2Repository.deleteAll().subscribe();
+		return Mono.just("Deleted Successfully");
+	}
 }
 
 

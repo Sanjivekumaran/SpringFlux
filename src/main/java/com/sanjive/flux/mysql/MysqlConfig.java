@@ -1,6 +1,7 @@
 package com.sanjive.flux.mysql;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.r2dbc.ConnectionFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +15,18 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import io.r2dbc.spi.ConnectionFactory;
 
 @Configuration
-@EnableR2dbcRepositories( entityOperationsRef = "mysqlEmployeeEntityTemplate")
+@EnableR2dbcRepositories(entityOperationsRef = "mysqlEmployeeEntityTemplate")
 public class MysqlConfig {
+	
+	@Value("${spring.r2dbc.mysql.url}")
+	String url;
 
 	@Bean
-    @Qualifier(value = "mysqlConnectionFactory")
-	 ConnectionFactory mysqlConnectionFactory() {
+	@Qualifier(value = "mysqlConnectionFactory")
+	ConnectionFactory mysqlConnectionFactory() {
 		// TODO Auto-generated method stub
 		return ConnectionFactoryBuilder.withUrl("r2dbc:mysql://root:root@127.0.0.1:3306/employeedb").build();
 	}
-	
 
 	@Bean
 	R2dbcEntityOperations mysqlEmployeeEntityTemplate(

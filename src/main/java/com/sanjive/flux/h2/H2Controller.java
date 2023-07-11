@@ -16,18 +16,18 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/h2")
 public class H2Controller {
-	
-	@Autowired 
+
+	@Autowired
 	H2Service h2Service;
-	
+
 	@GetMapping("/mono")
-	public Mono<Employee> getMono() {
-		return h2Service.save(new Employee("test", "test", "test",
-				"test"));	}
+	public String getMono() {
+		return "String";
+	}
 
 	@GetMapping("/GetEmployee")
 	public Flux<Employee> getEmployee() {
-		Flux<Employee> emp=h2Service.findAll();
+		Flux<Employee> emp = h2Service.findAll();
 		return emp;
 	}
 
@@ -37,15 +37,20 @@ public class H2Controller {
 				employee.getDesignation()));
 //		return Mono.just("Saved Successfully");
 	}
-	
+
 	@PutMapping("/UpdateEmployee")
 	public Mono<String> UpdateEmployee(@RequestBody Employee employee) {
 		return h2Service.update(employee);
-		
+
 	}
-	
+
 	@DeleteMapping("/DeleteEmployee/{id}")
 	public Mono<String> DeleteEmployee(@PathVariable int id) {
 		return h2Service.delete(id);
+	}
+	
+	@DeleteMapping("/DeleteAll")
+	public Mono<String> DeleteEmployee() {
+		return h2Service.deleteAll();
 	}
 }
