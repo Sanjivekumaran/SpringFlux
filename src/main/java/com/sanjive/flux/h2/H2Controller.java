@@ -20,9 +20,9 @@ public class H2Controller {
 	@Autowired
 	H2Service h2Service;
 
-	@GetMapping("/mono")
-	public String getMono() {
-		return "String";
+	@PostMapping("/mono")
+	public Mono<String> getMono(@RequestBody String string) {
+		return Mono.just(string);
 	}
 
 	@GetMapping("/GetEmployee")
@@ -32,10 +32,21 @@ public class H2Controller {
 	}
 
 	@PostMapping("/AddEmployee")
-	public Mono<Employee> addEmployee(@RequestBody Employee employee) {
-		return h2Service.save(new Employee(employee.getName(), employee.getPhonenumber(), employee.getLocation(),
-				employee.getDesignation()));
-//		return Mono.just("Saved Successfully");
+	public Mono<String> addEmployee(@RequestBody Employee employee) {
+		if(employee.getName()==null) {
+			return Mono.just("Name missing");
+		}
+		else if(employee.getPhonenumber()==null) {
+			return Mono.just("Phonenumber missing");
+		}
+		else if(employee.getLocation()==null) {
+			return Mono.just("Location missing");
+		}
+		else if(employee.getDesignation()==null) {
+			return Mono.just("Designation missing");
+		}
+		h2Service.save(new Employee(employee.getName(), employee.getPhonenumber(), employee.getLocation(), employee.getDesignation()));
+		return Mono.just("Saved Successfully");
 	}
 
 	@PutMapping("/UpdateEmployee")

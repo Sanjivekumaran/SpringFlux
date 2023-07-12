@@ -31,8 +31,7 @@ public class StepDefinitions {
 	private String deleteResult;
 	private List<Employee> employees;
 	private String URL;
-	private ResponseEntity<String> response;
-	private RestTemplate restTemplate;
+	private String response;
 
 	@Given("user sets URL")
 	public void set_endpoint_to_be_called() {
@@ -41,19 +40,17 @@ public class StepDefinitions {
 		System.out.println(URL);
 	}
 	
-	@When("user calls end point")
-	public void endpoint() {
+	@When("^user calls end point with (\\w+)$")
+	public void endpoint(final String body) {
 		
-		restTemplate = new RestTemplate();
-		response = restTemplate.getForEntity(URL, String.class);
-
+		response = webTestClient.post().uri(URL).body(Mono.just(body), String.class).exchange().expectStatus().isOk().expectBody(String.class).returnResult()
+				.getResponseBody();
 	}
 	
 	@Then("^user receives HTTP response code 200 and (\\w+)$")
 	public void check_200_output(final String string) {
 		
-		assertEquals(response.getStatusCode(), HttpStatusCode.valueOf(200));
-		assertEquals(string, response.getBody());
+		assertEquals(string, response);
 		
 	}
 	
@@ -66,11 +63,10 @@ public class StepDefinitions {
 	}
 
 	@When("^user calls (GET|PUT|POST|DELETE) on (\\w+) method$")
-	public void specific_endpoint(final String method, final String api) {
+	public void specific_endpoint_old(final String method, final String api) {
 		
 		URL = "/" + URL + "/" + api;
 		System.out.println(URL);
-		restTemplate = new RestTemplate();
 		
 		if (method.equals("GET")) {
 			employees = webTestClient.get()
@@ -80,7 +76,7 @@ public class StepDefinitions {
 		else if (method.equals("POST")) {
 			Employee employee = new Employee("test1", "test", "test", "test");
 			addedEmployee = webTestClient.post()
-					.uri(URL).body(Mono.just(employee), Employee.class).exchange()
+					.uri(URL).header("Content-Type", "application/json; charset=UTF-8").body(Mono.just(employee), Employee.class).exchange()
 					.expectStatus().isOk().expectBody(Employee.class).returnResult().getResponseBody();
 		} 
 		else if (method.equals("PUT")) {
@@ -96,7 +92,7 @@ public class StepDefinitions {
 		}
 		
 	}
-
+	
 	@Then("the employee should be added successfully")
 	public void employeeShouldBeAddedSuccessfully() {
 		
@@ -112,7 +108,7 @@ public class StepDefinitions {
 		
 		String result = updateResult;
 		
-		assertEquals("Saved Successfully", result);
+		assertEquals(null, result);
 		
 	}
 

@@ -16,18 +16,18 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/mysql")
 public class MysqlController {
-	
-	@Autowired 
+
+	@Autowired
 	MysqlService mysqlService;
-	
+
 	@GetMapping("/mono")
 	public Mono<Employee> getMono() {
-		return mysqlService.save(new Employee("test", "test", "test",
-				"test"));	}
+		return mysqlService.save(new Employee("test", "test", "test", "test"));
+	}
 
 	@GetMapping("/GetEmployee")
 	public Flux<Employee> getEmployee() {
-		Flux<Employee> emp=mysqlService.findAll();
+		Flux<Employee> emp = mysqlService.findAll();
 		return emp;
 	}
 
@@ -36,13 +36,13 @@ public class MysqlController {
 		return mysqlService.save(new Employee(employee.getName(), employee.getPhonenumber(), employee.getLocation(),
 				employee.getDesignation()));
 	}
-	
+
 	@PutMapping("/UpdateEmployee")
 	public Mono<String> UpdateEmployee(@RequestBody Employee employee) {
 		return mysqlService.update(employee);
-		
+
 	}
-	
+
 	@DeleteMapping("/DeleteEmployee/{id}")
 	public Mono<String> DeleteEmployee(@PathVariable int id) {
 		return mysqlService.delete(id);
